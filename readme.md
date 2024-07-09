@@ -19,7 +19,13 @@
 
 [Learning source 1](https://www.youtube.com/watch?v=RqTEHSBrYFw)
 
-#### 1.1 What are functions calling and what is the need of it
+#### 1.1 What problem does Docker solve?
+
+- Docker is a tool that allows developers, sys-admins etc. to easily deploy their applications in a sandbox (called containers) to run on the host operating system i.e. Linux. The key benefit of Docker is that it allows users to package an application with all of its dependencies into a standardized unit for software development. Unlike virtual machines, containers do not have the high overhead and hence enable more efficient usage of the underlying system and resources.
+
+#### 1.2 What is virtualization?
+
+-
 
 ### Imporatnt resources:
 
