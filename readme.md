@@ -77,6 +77,31 @@
 
   This will look for the hello-world image locally first, and then if it does not find it, it will pull the image from the docker hub and run the container.
 
+#### 1.5 What is DockerHub?
+
+- DockerHub is a cloud-based container registry service by Docker that allows developers and open source contributors to find, use, manage, and share their container images. Developers can host public repos that can be used for free, or private repos for teams and enterprises.
+
+#### 1.6 How to persist the data change in the container?
+
+- By Defaut, all Data created/change dinside a container is lost when the container is stopped or deleted. To presist the data, we can achieve it by 3 ways:
+
+  1. We make sure that the data should be accurate everytime a container is up, we add the dependecy inside the container image so it should build into the image itself.
+     ex: Container image as a third party database connection string that doesn't get affected when the container is stopped or deleted, probably a cloud hosted database.
+
+  2. We can use docker **volume mount method** to store that data outside of the container filessystem. This way the data will be persisted even if the container is stopped or deleted. Docker creates a directory inside the VM that docker manages itself. The directory path in VM is `/var/lib/docker/volumes`. We can tell docker to use that volume to mount to container's directory and copy all it's data inside the container at the time of container creation. It is the default and suggested way by Docker.
+
+  ```
+  docker run -it --mount source=my-volume,destination=/app/data ubuntu:22:04
+  ```
+
+  3. We can use **Bind mount method**, by which we can bind the local directory to the container directory which is managed by our operating system and not by Docker VM.
+
+  ```
+    docker run -it --mount type=bind source="${PWD}"/local/directory destination=/app/data ubuntu:22:04
+  ```
+
+- https://www.freecodecamp.org/news/docker-mount-volume-guide-how-to-mount-a-local-directory/
+
 ### Imporatnt resources:
 
 - https://medium.com/@HirenDhaduk1/can-you-use-containers-and-virtual-machines-together-22128a1266ff
