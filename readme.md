@@ -21,12 +21,66 @@
 
 #### 1.1 What problem does Docker solve?
 
-- Docker is a tool that allows developers, sys-admins etc. to easily deploy their applications in a sandbox (called containers) to run on the host operating system i.e. Linux. The key benefit of Docker is that it allows users to package an application with all of its dependencies into a standardized unit for software development. Unlike virtual machines, containers do not have the high overhead and hence enable more efficient usage of the underlying system and resources.
+- Docker is a tool that allows developers, sys-admins etc. to easily deploy their applications in a sandbox (called containers) to run on the host operating system i.e. The operating system installed on the physical or virtual machine where Docker is running.
 
-#### 1.2 What is virtualization?
+- The key benefit of Docker is that it allows users to package an application with all of its dependencies into a standardized unit for software development so that the application works seamlessly in any environment without taking affect from the user's operating system, dependencies and local system configuration. Basically it solves a problem of `"it works on my machine"`.
 
--
+- Docket follows Open Container Initiative (OCI) standards and is designed to work on any infrastructure.
+
+#### 1.2 What is a docker container?
+
+- A Docker container image is a lightweight, standalone, executable package of software that includes everything needed to run a piece of software, including the code, a runtime, libraries, environment variables, and config files so the application runs quickly and reliably from one computing environment to another.
+
+![Containerization](./assets/containerization.png)
+
+#### 1.3 What is Virtualization?
+
+- Virtualization is a process that allows for more efficient use of physical computer hardware and is the foundation of cloud computing. Virtualization uses software such as VMware, Oracle VirtualBox to create an abstraction layer over computer hardware, enabling the division of a single computer's hardware components—such as processors, memory and storage—into multiple virtual machines (VMs). Each VM runs its own operating system (OS) and behaves like an independent computer, even though it is running on just a portion of the actual underlying computer hardware.
+
+![Virtualization](./assets/virtualization.png)
+
+#### 1.3 Can we run virtual machines and docker together?
+
+- Yes, we can run virtual machines and docker together. Host system can install virtual machine software like VMware, Oracle VirtualBox and then install docker on the virtual machine. This way we can run multiple docker containers on the virtual machine.
+
+![virtualization-containerization-together](./assets/virtualization-containerization-together.png)
+
+- The challenge occurs within the managment of all the containers running across different virtual machines. This is where container orchestration tools like `Kubernetes` and `Docker Swarm` come in.
+
+#### 1.4 What is the architecture of Docker Desktop when it is installed on windows and mac?
+
+- Docker Desktop uses Hyper-V on Windows and HyperKit on Mac to run the VM. The VM runs a Linux kernel and is very lightweight. Then in that VM, docker sets up 2 softwares, one is the `Docker Demon` that exposes some APIs. so when a command is execused from the CLI. That command is passed to Docker Demon via the API.
+
+  - `Docker Demon` is the server that runs in the background and listens for API requests and manages Docker objects like images, containers, networks and volumes etc.
+
+- The second software that is configured and install in the VM by the Docker Desktop is the optional `kubertenes K8 cluster`. We can use this cluster to take advantage of Kubernetes if we are developing for it, without install it separately.
+
+![docker-desktop-arch](./assets/docker-desktop-arch.png)
+
+#### 1.4 What is the architecture of Docker Desktop when it is installed on Linux?
+
+- `Docker Engine` is called to different components of the docker. It is the open source core.
+
+  - Docker CLI
+  - Docker APIs
+  - Docker Demon
+
+  The engine can install on any Linux distribution without the need of a VM, or a desktop client. Better to use Docker Desktop for GUI benefits.
+
+#### 1.5 Run your first docker container:
+
+- Run the following command in the terminal.
+
+  ```bash
+  docker run hello-world
+  ```
+
+  This will look for the hello-world image locally first, and then if it does not find it, it will pull the image from the docker hub and run the container.
 
 ### Imporatnt resources:
 
+- https://medium.com/@HirenDhaduk1/can-you-use-containers-and-virtual-machines-together-22128a1266ff
+- https://learn.microsoft.com/en-us/windows/wsl/install
+- https://docs.docker.com/desktop/troubleshoot/topics/#virtualization
+- https://docs.docker.com/desktop/install/windows-install/
 -
