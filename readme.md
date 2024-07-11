@@ -83,10 +83,10 @@
 
 #### 1.6 How to persist the data change in the container?
 
-- By Defaut, all Data created/change dinside a container is lost when the container is stopped or deleted. To presist the data, we can achieve it by 3 ways:
+- By Defaut, all Data created/changed inside a container is lost when the container is stopped or deleted To presist the data, we can achieve it by 3 ways:
 
   1. We make sure that the data should be accurate everytime a container is up, we add the dependecy inside the container image so it should build into the image itself.
-     ex: Container image as a third party database connection string that doesn't get affected when the container is stopped or deleted, probably a cloud hosted database.
+     ex: Container image as a third party database connection string that doesn't get affected when the container is stopped or deleted, probably a cloud hosted database
 
   2. We can use docker **volume mount method** to store that data outside of the container filessystem. This way the data will be persisted even if the container is stopped or deleted. Docker creates a directory inside the VM that docker manages itself. The directory path in VM is `/var/lib/docker/volumes`. We can tell docker to use that volume to mount to container's directory and copy all it's data inside the container at the time of container creation. It is the default and suggested way by Docker.
 
@@ -98,6 +98,13 @@
 
   ```
     docker run -it --mount type=bind source="${PWD}"/local/directory destination=/app/data ubuntu:22:04
+  ```
+
+  One other usecase would be to mount a secret file that we don't want to expose on DockerFile. We can use `--mount type=secret` to mount the secret file.
+
+  ```
+    docker run -it --mount type=secret source=secret.txt,destination=/container-secret.txt
+
   ```
 
 - https://www.freecodecamp.org/news/docker-mount-volume-guide-how-to-mount-a-local-directory/
@@ -112,9 +119,34 @@
 
 - https://docs.docker.com/reference/dockerfile/
 
+![dockerfile](./assets/dockerfile.png)
+
 #### 1.8 What is a .dockerignore?
 
 - A `.dockerignore` file is used to exclude files and directories from the build context. It is similar to `.gitignore` file. It is used to speed up the build process and reduce the size of the image.
+
+#### 1.9 Best practices to use when creating a Dockerfile:
+
+1. Pin Specific versions of the base image, system and application dependencies. Never use latest.
+2. `COPY` dependencies first and then install them. This way docker can cache the dependencies and only rebuild the image if the dependencies change.
+3. After 2, Copy the remaining source code.
+4. Combine steps that are linked togehter.
+5. use comments to explain the steps in the Dockerfile.
+6. set working directory with `WORKDIR`
+7. indicate port with `EXPOSE`
+8. set env variables with `ENV`
+9. use .dockerignore file to exclude files and directories from the build context.
+10. use `multi-stage builds` to keep the image size small. check readme of api-golang for more details.
+
+#### 1.10 What is a docker-compose.yml?
+
+- A docker-compose.yml file is used to define and run containerized Docker application. It is a YAML file that specifies how to build and run the containers. It is used to define services, networks and volumes and services that make up the application, how they interact, and how they can be started, stopped, and scaled.
+
+- Docker-compose also makes it easy to startup multiple containers at the same time and automatically connect them together with some form of networking.
+
+- When there are multiple containized applications just as our case here (api-node, api-golang, react-app). It's super handful to use docker-compose.
+
+- It is an effective alternative to run Docker commands directly in CLI.
 
 ### Imporatnt resources:
 

@@ -1,0 +1,65 @@
+version: "3.9"
+services:
+  client-app: #the name of servvice/container
+    image: react-app # the name of image
+    build:
+      context: ./react-app # where is the application
+      dockerfile: ./react-app/Dockerfile # where is the docker file
+    init: true
+    volumes:
+      - ${PWD}/react-app/vite.config.js:/usr/src/app/vite.config.js # bind mount for the vite config.
+    networks:
+      - frontend # this service/container belongs to frontend network
+    ports:
+      - 5173:5173 # host:container ports
+
+  node-app: #the name of servvice/container
+    image: node-api # the name of image
+    build:
+      context: ./api-node # where is the application
+      dockerfile: ./api-node/Dockerfile # where is the docker file
+    init: true
+    depends_on:
+      - db # this service/container depends on another service called db, wait until db container is up and running
+    environment:
+      - DATABASE_URL=postgress://postgres:password@db:5432/postgres # environment variables
+    networks:
+      - backend #this service/container belongs to both backend and frontend network
+      - frontend
+    ports:
+      - 3000:3000 # host:container ports
+    restart: unless-stopped # dont restart until the container is stopped
+
+  golang-app:
+    image: golang-api # the name of image
+    build:
+      context: ./api-golang # where is the application
+      dockerfile: ./api-golang/Dockerfile # where is the docker file
+    init: true
+    depends_on:
+      - db # this service/container depends on another service called db, wait until db container is up and running
+    environment:
+      - DATABASE_URL=postgress://postgres:password@db:5432/postgres # environment variables
+    networks:
+      - backend #this service/container belongs to both backend and frontend network
+      - frontend
+    ports:
+      - 8000:8000 # host:container ports
+    restart: unless-stopped # dont restart until the container is stopped
+
+  db: #the name of servvice/container
+    image: postgres:15.1-alpine # the name of image
+    volumes:
+      - pgdata:/var/lib/postgresql/data # bind mount for the postgres data
+    environment:
+      - POSTGRES_PASSWORD=password # environment variables
+    networks:
+      - backend # this service/container belongs to backend network
+    ports:
+      - 5432:5432 # host:container ports
+
+volumes: # all the volumes used in individual services are defined here
+  pgdata:
+networks: # all the networks used in individual services are defined here
+  frontend:
+  backend:
