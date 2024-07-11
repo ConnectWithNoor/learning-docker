@@ -1,0 +1,25 @@
+# This file will allow the API Layer (api-node & api-golang) to have vs-code debugger running inside the container but exposed to the host machine so that we can debug the application in vscode .
+
+version: "3.9"
+services:
+  node-app:
+    command: # this will override the command in docker-compose (we haven't given that in docker-compose, but just in case if we have), equilant to CMD in Dockerfile, ['npm', 'run', 'debug-docker'] that will run the script inside pkg-json
+      - "npm"
+      - "run"
+      - "debug-docker"
+    ports:
+      - 3000:3000 # normal API server port
+      - 9229:9229 # debug server port
+  golang-app:
+    command: # not sure about the commands, copilot generated it for golang
+      - "dlv"
+      - "debug"
+      - "--headless"
+      - "--listen=:2345"
+      - "--log"
+      - "--api-version=2"
+      - "--accept-multiclient"
+      - "--continue"
+    ports:
+      - 8080:8080 # normal API server port
+      - 2345:2345 # debug server port

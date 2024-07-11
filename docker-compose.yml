@@ -7,7 +7,15 @@ services:
       dockerfile: ./react-app/Dockerfile # where is the docker file
     init: true
     volumes:
-      - ${PWD}/react-app/vite.config.js:/usr/src/app/vite.config.js # bind mount for the vite config.
+      - type: bind
+        source: ./react-app/
+        target: /usr/src/app/
+        # bind mount for entire source code. use above or below lines (diff syntax, works same way)
+      - ${PWD}/react-app/vite.config.js:/usr/src/app/vite.config.js
+
+      - type: volume # bind mount for node_modules, since we dont want to have node_modules in our host machine, we skip the source and point out to the target
+        target: /usr/src/app/node_modules
+
     networks:
       - frontend # this service/container belongs to frontend network
     ports:
@@ -19,6 +27,13 @@ services:
       context: ./api-node # where is the application
       dockerfile: ./api-node/Dockerfile # where is the docker file
     init: true
+    volumes:
+      - type: bind
+        source: ./api-node/
+        target: /usr/src/api-node/
+
+      - type: volume # bind mount for node_modules, since we dont want to have node_modules in our host machine, we skip the source and point out to the target
+        target: /usr/src/app/node_modules
     depends_on:
       - db # this service/container depends on another service called db, wait until db container is up and running
     environment:
@@ -50,7 +65,7 @@ services:
   db: #the name of servvice/container
     image: postgres:15.1-alpine # the name of image
     volumes:
-      - pgdata:/var/lib/postgresql/data # bind mount for the postgres data
+      - pgdata:/var/lib/postgresql/data # bind mount for the postgres data, check first two volumes for better understanding
     environment:
       - POSTGRES_PASSWORD=password # environment variables
     networks:

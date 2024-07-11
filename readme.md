@@ -13,11 +13,11 @@
 
 ##### Later will be deploy to:
 
-    - Docker Swarm (Container orchestration build into docker)
-    - railway.app
-    - kubernetes
+    - Docker Swarm (haven't done that in this repo/ check video 1 from 4:07:00)
+    - kubernetes (haven't done that in this repo. check video below if needed)
 
 [Learning source 1](https://www.youtube.com/watch?v=RqTEHSBrYFw)
+[Kuberbetes](https://www.youtube.com/watch?v=6TpXObxxFOU)
 
 #### 1.1 What problem does Docker solve?
 
@@ -147,6 +147,14 @@
 - When there are multiple containized applications just as our case here (api-node, api-golang, react-app). It's super handful to use docker-compose.
 
 - It is an effective alternative to run Docker commands directly in CLI.
+
+#### 1.11: Why do you have 2 docker-compose on root?
+
+- We can pass both docker-compose file as an argument to the docker-compose up command. This way we can run multiple docker-compose files at the same time. The 2nd file will override the first time. so by that way we can have a base setup for our application and then we can have a development setup that will override the base setup.
+
+```
+docker compose -f docker-compose.yml -f docker-compose.begug.yml up
+```
 
 ### Imporatnt resources:
 
