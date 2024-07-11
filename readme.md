@@ -94,7 +94,7 @@
   docker run -it --mount source=my-volume,destination=/app/data ubuntu:22:04
   ```
 
-  3. We can use **Bind mount method**, by which we can bind the local directory to the container directory which is managed by our operating system and not by Docker VM.
+  3. We can use **Bind mount method**, by which we can bind the local directory to the container directory which is managed by local system and not by Docker VM.
 
   ```
     docker run -it --mount type=bind source="${PWD}"/local/directory destination=/app/data ubuntu:22:04
@@ -102,7 +102,23 @@
 
 - https://www.freecodecamp.org/news/docker-mount-volume-guide-how-to-mount-a-local-directory/
 
+#### 1.7 What is a Dockerfile?
+
+- A Dockerfile is a text document that contains all the docker commands a user could call on the CLI to create and make specificiation to an image. DockerFile is paired with a build context, which can be directory (source code) in the local system or a URL (from github etc). The `build context` contains all the files and directories that are used in the Dockerfile. With these two pairs we can build a container image by using `docker build` command.
+
+- Make sure you have Docker vscode extension installed. It helps in intellisense and syntax highlighting.
+
+- Usually you will find a docker image of all languages runtime, databases, operating system on the docker hub that you can use in the Dockerfile.
+
+- https://docs.docker.com/reference/dockerfile/
+
+#### 1.8 What is a .dockerignore?
+
+- A `.dockerignore` file is used to exclude files and directories from the build context. It is similar to `.gitignore` file. It is used to speed up the build process and reduce the size of the image.
+
 ### Imporatnt resources:
+
+- `Do through the src application directories for DockerFile and readmes.`
 
 - https://medium.com/@HirenDhaduk1/can-you-use-containers-and-virtual-machines-together-22128a1266ff
 - https://learn.microsoft.com/en-us/windows/wsl/install
