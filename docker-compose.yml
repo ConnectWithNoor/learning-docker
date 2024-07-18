@@ -2,6 +2,7 @@ version: "3.9"
 services:
   client-app: #the name of servvice/container
     image: react-app # the name of image
+    restart: always
     build:
       context: ./react-app # where is the application
       dockerfile: ./react-app/Dockerfile # where is the docker file
